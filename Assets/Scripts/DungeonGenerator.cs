@@ -6,14 +6,14 @@ public class DungeonGenerator : MonoBehaviour
     [Header("Dungeon Parameters")]
     public int width = 50;
     public int height = 50;
-    public float fillProbability = 0.4f; // Chance to initialize a cell as a wall
-    public int iterations = 4; // Number of CA iterations
+    public float fillProbability = 0.4f;
+    public int iterations = 4;
 
     [Header("Tiles")]
     public GameObject wallTile;
     public GameObject floorTile;
 
-    private int[,] map; // 2D grid for the dungeon
+    private int[,] map;
 
     void Start()
     {
@@ -32,13 +32,11 @@ public class DungeonGenerator : MonoBehaviour
 
         DrawMap();
 
-        // Adjust camera after generating the dungeon
         Camera.main.GetComponent<CameraController>().AdjustCamera();
     }
 
     void InitializeMap()
     {
-        // Randomly assign wall or floor based on fill probability
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -58,7 +56,7 @@ public class DungeonGenerator : MonoBehaviour
             {
                 int neighborWalls = CountWallNeighbors(oldMap, x, y);
 
-                // Rules for wall/floor transition based on neighbor count
+                // Rules
                 if (oldMap[x, y] == 1)
                 {
                     newMap[x, y] = (neighborWalls >= 4) ? 1 : 0;
@@ -79,10 +77,9 @@ public class DungeonGenerator : MonoBehaviour
         {
             for (int j = -1; j <= 1; j++)
             {
-                if (i == 0 && j == 0) continue; // Ignore the cell itself
+                if (i == 0 && j == 0) continue;
                 int nx = x + i, ny = y + j;
 
-                // Count as wall if out of bounds or it's a wall cell
                 if (nx < 0 || ny < 0 || nx >= width || ny >= height)
                 {
                     count++;
